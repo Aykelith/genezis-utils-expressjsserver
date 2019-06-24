@@ -1,51 +1,54 @@
 import GenezisChecker from "genezis/Checker";
+import deleteOnProduction from "genezis/utils/deleteOnProduction";
 
 import http from 'http';
 import Express from 'express';
 import body_parser from 'body-parser'; // for getting GETs/POSTs data   
 import session from 'express-session';
 
+const GenezisCheckerConfig = deleteOnProduction({
+    viewEngine: GenezisChecker.string().required({ onlyIfFieldsAreDeclared: ["viewsPath"] }),
+    viewsPath: GenezisChecker.string().required({ onlyIfFieldsAreDeclared: ["viewEngine"] }),
+    staticPaths: GenezisChecker.array({ of: GenezisChecker.string() }),
+    supportJSONRequest: GenezisChecker.object({
+        shape: {
+            limit: GenezisChecker.string()
+        }
+    }),
+    supportGet: GenezisChecker.object({
+        extented: GenezisChecker.boolean(),
+        limit: GenezisChecker.string()
+    }),
+    trustProxy: GenezisChecker.boolean(),
+    hmr: GenezisChecker.object({
+        shape: {
+            webpackConfigFilePath: GenezisChecker.string().required()
+        }
+    }),
+    session: GenezisChecker.object({
+        shape: {
+            secret: GenezisChecker.string().required(),
+            saveUninitialized: GenezisChecker.boolean(),
+            resave: GenezisChecker.boolean(),
+            cookie: GenezisChecker.object({
+                shape: {
+                    secure: GenezisChecker.boolean()
+                }
+            }),
+            store: GenezisChecker.object()
+        }
+    }),
+    port: GenezisChecker.integer(),
+    plugins: GenezisChecker.array({
+        of: GenezisChecker.function()
+    })
+});
+
 /**
  * 
  */
 export default async (settings) => {
-    GenezisChecker(settings, {
-        viewEngine: GenezisChecker.string().required({ onlyIfFieldsAreDeclared: ["viewsPath"] }),
-        viewsPath: GenezisChecker.string().required({ onlyIfFieldsAreDeclared: ["viewEngine"] }),
-        staticPaths: GenezisChecker.array({ of: GenezisChecker.string() }),
-        supportJSONRequest: GenezisChecker.object({
-            shape: {
-                limit: GenezisChecker.string().default("100mb")
-            }
-        }),
-        supportGet: GenezisChecker.object({
-            extented: GenezisChecker.boolean().default(true),
-            limit: GenezisChecker.string().default("100mb")
-        }),
-        trustProxy: GenezisChecker.boolean().default(false),
-        hmr: GenezisChecker.object({
-            shape: {
-                webpackConfigFilePath: GenezisChecker.string().required()
-            }
-        }),
-        session: GenezisChecker.object({
-            shape: {
-                secret: GenezisChecker.string().required(),
-                saveUninitialized: GenezisChecker.boolean().default(false),
-                resave: GenezisChecker.boolean().default(false),
-                cookie: GenezisChecker.object({
-                    shape: {
-                        secure: GenezisChecker.boolean().default(true)
-                    }
-                }),
-                store: GenezisChecker.object()
-            }
-        }),
-        port: GenezisChecker.integer().default(process.env.NODE_PORT),
-        plugins: GenezisChecker.array({
-            of: GenezisChecker.function()
-        })
-    });
+    GenezisChecker(settings, GenezisCheckerConfig);
 
     const app = new Express(); // Initialize Express variable
 
