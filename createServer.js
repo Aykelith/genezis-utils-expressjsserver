@@ -38,7 +38,7 @@ const GenezisCheckerConfig = deleteOnProduction({
             store: GenezisChecker.object()
         }
     }),
-    port: GenezisChecker.integer(),
+    port: GenezisChecker.integer({ convert: true }),
     plugins: GenezisChecker.array({
         of: GenezisChecker.function()
     })
