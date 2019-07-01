@@ -1,0 +1,19 @@
+{
+  "name": "@genezis/genezis-utils-expressjsserver",
+  "version": "0.1.0",
+  "description": "",
+  "main": "createServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aykelith/genezis-utils-expressjsserver.git"
+  },
+  "author": "Alexandru Prisacariu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aykelith/genezis-utils-expressjsserver/issues"
+  },
+  "homepage": "https://github.com/Aykelith/genezis-utils-expressjsserver#readme"
+}
