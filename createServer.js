@@ -1,4 +1,4 @@
-import GenezisChecker from "@genezi/genezis/Checker";
+import GenezisChecker from "@genezis/genezis/Checker";
 import deleteOnProduction from "@genezis/genezis/utils/deleteOnProduction";
 
 import http from 'http';
