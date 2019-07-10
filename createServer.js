@@ -1,14 +1,14 @@
 import GenezisChecker from "@genezis/genezis/Checker";
 import deleteOnProduction from "@genezis/genezis/utils/deleteOnProduction";
 
-import http from 'http';
-import Express from 'express';
-import body_parser from 'body-parser'; // for getting GETs/POSTs data   
-import session from 'express-session';
+import http from "http";
+import Express from "express";
+import body_parser from "body-parser"; // for getting GETs/POSTs data
+import session from "express-session";
 
 const GenezisCheckerConfig = deleteOnProduction({
-    viewEngine: GenezisChecker.string().required({ onlyIfFieldsAreDeclared: ["viewsPath"] }),
-    viewsPath: GenezisChecker.string().required({ onlyIfFieldsAreDeclared: ["viewEngine"] }),
+    viewEngine: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewsPath"] }),
+    viewsPath: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewEngine"] }),
     staticPaths: GenezisChecker.array({ of: GenezisChecker.string() }),
     supportJSONRequest: GenezisChecker.object({
         shape: {
@@ -53,8 +53,8 @@ export default async (settings) => {
     const app = new Express(); // Initialize Express variable
 
     if (settings.viewEngine) {
-        app.set('view engine', settings.viewEngine); // Setting up the view engine
-        app.set('views', settings.viewsPath); // Setting up the views folder
+        app.set("view engine", settings.viewEngine); // Setting up the view engine
+        app.set("views", settings.viewsPath); // Setting up the views folder
     }
 
     if (settings.staticPaths) {
@@ -73,14 +73,14 @@ export default async (settings) => {
         }));
     }
 
-    if (settings.trustProxy) app.enable('trust proxy');
+    if (settings.trustProxy) app.enable("trust proxy");
 
     if (settings.session) {
         app.use(session(settings.session));
     }
 
     if (settings.hmr) {
-        const webpack = require('webpack');
+        const webpack = require("webpack");
         const webpackConfig = require(settings.hmr.webpackConfigFilePath);
         const compiler = webpack(webpackConfig);
 
@@ -90,7 +90,7 @@ export default async (settings) => {
         
         app.use(require("webpack-hot-middleware")(compiler, {
             log: console.log,
-            path: '/__webpack_hmr', 
+            path: "/__webpack_hmr", 
             heartbeat: 10 * 1000
         }));
     }
