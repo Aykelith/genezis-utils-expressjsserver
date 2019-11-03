@@ -35,7 +35,7 @@ const GenezisCheckerConfig = deleteOnProduction({
                     secure: GenezisChecker.boolean()
                 }
             }),
-            store: GenezisChecker.object()
+            store: GenezisChecker.function()
         }
     }),
     port: GenezisChecker.integer({ convert: true }),
@@ -76,6 +76,8 @@ export default async (settings) => {
     if (settings.trustProxy) app.enable("trust proxy");
 
     if (settings.session) {
+        if (settings.session.store) settings.session.store = settings.session.store(session); 
+
         app.use(session(settings.session));
     }
 
