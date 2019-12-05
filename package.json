@@ -1,6 +1,6 @@
 {
   "name": "@genezis/genezis-utils-expressjsserver",
-  "version": "0.1.411",
+  "version": "0.1.412",
   "description": "",
   "main": "createServer.js",
   "scripts": {
