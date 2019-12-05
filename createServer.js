@@ -1,5 +1,5 @@
-import GenezisChecker from "@genezis/genezis/Checker";
-import deleteOnProduction from "@genezis/genezis/utils/deleteOnProduction";
+import GenezisChecker from "@genezis/genezis/_es5/Checker";
+import deleteOnProduction from "@genezis/genezis/_es5/utils/deleteOnProduction";
 
 import http from "http";
 import Express from "express";
