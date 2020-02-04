@@ -122,11 +122,11 @@ export default async (settings) => {
         };
 
         const server = new https.Server(httpsOptions, app); // Create a server through Express
-        server.listen(3002, err => {
+        server.listen(settings.secureSettings.port, err => {
             if (err) {
                 return console.error(err);
             }
-            console.info("Server running on port 3002");
+            console.info(`Server running on port ${settings.secureSettings.port}`);
         });
     }
     
