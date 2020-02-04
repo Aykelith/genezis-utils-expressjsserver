@@ -1,7 +1,6 @@
 import GenezisChecker from "@genezis/genezis/Checker";
 import deleteOnProduction from "@genezis/genezis/utils/deleteOnProduction";
 
-import http from "http";
 import Express from "express";
 import body_parser from "body-parser"; // for getting GETs/POSTs data
 import session from "express-session";
@@ -101,13 +100,36 @@ export default async (settings) => {
         await Promise.all(settings.plugins.map(plugin => plugin(app)));
     }
 
-    const server = new http.Server(app); // Create a server through Express
-    server.listen(settings.port, err => {
-        if (err) {
-            return console.error(err);
-        }
-        console.info(`Server running on http://localhost:${settings.port}`);
-    });
+    if (!settings.onlySecure) {
+        const http = require("http");
+
+        const server = new http.Server(app); // Create a server through Express
+        server.listen(settings.port, err => {
+            if (err) {
+                return console.error(err);
+            }
+            console.info(`Server running on http://localhost:${settings.port}`);
+        });
+    }
+
+    if (settings.secureSettings) {
+        const fs = require("fs");
+        const https = require("https");
+
+        const httpsOptions = {
+            key: fs.readFileSync(settings.secureSettings.key),
+            cert: fs.readFileSync(settings.secureSettings.cert)
+        };
+
+        const server = new https.Server(httpsOptions, app); // Create a server through Express
+        server.listen(3002, err => {
+            if (err) {
+                return console.error(err);
+            }
+            console.info("Server running on port 3002");
+        });
+    }
+    
 
     return app;
 }
