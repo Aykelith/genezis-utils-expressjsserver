@@ -94,6 +94,8 @@ export default async (settings) => {
             path: "/__webpack_hmr", 
             heartbeat: 10 * 1000
         }));
+
+        app.webpackCompiler = compiler;
     }
 
     if (settings.plugins) {
