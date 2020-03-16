@@ -7,7 +7,7 @@ import session from "express-session";
 
 const GenezisCheckerConfig = deleteOnProduction({
     viewEngine: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewsPath"] }),
-    viewsPath: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewEngine"] }),
+    viewsPath: GenezisChecker.array({ of: GenezisChecker.string() }).required({ onlyIfAvailableOneOf: ["viewEngine"] }),
     staticPaths: GenezisChecker.array({ of: GenezisChecker.string() }),
     supportJSONRequest: GenezisChecker.object({
         shape: {
