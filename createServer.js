@@ -6,8 +6,8 @@ import body_parser from "body-parser"; // for getting GETs/POSTs data
 import session from "express-session";
 
 const GenezisCheckerConfig = deleteOnProduction({
-    viewEngine: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewsPath"] }),
-    viewsPath: GenezisChecker.array({ of: GenezisChecker.string() }).required({ onlyIfAvailableOneOf: ["viewEngine"] }),
+    viewEngine: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewsPaths"] }),
+    viewsPaths: GenezisChecker.array({ of: GenezisChecker.string() }).required({ onlyIfAvailableOneOf: ["viewEngine"] }),
     staticPaths: GenezisChecker.array({ of: GenezisChecker.string() }),
     supportJSONRequest: GenezisChecker.object({
         shape: {
@@ -53,7 +53,7 @@ export default async (settings) => {
 
     if (settings.viewEngine) {
         app.set("view engine", settings.viewEngine); // Setting up the view engine
-        app.set("views", settings.viewsPath); // Setting up the views folder
+        app.set("views", settings.viewsPaths); // Setting up the views folder
     }
 
     if (settings.staticPaths) {
