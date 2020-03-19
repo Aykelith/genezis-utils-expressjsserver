@@ -92,7 +92,8 @@ export default async (settings) => {
         app.use(require("webpack-hot-middleware")(compiler, {
             log: console.log,
             path: "/__webpack_hmr", 
-            heartbeat: 10 * 1000
+            heartbeat: 10 * 1000,
+            ...(settings.webpack_hot_middleware_settings || {})
         }));
 
         app.webpackCompiler = compiler;
