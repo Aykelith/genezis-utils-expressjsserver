@@ -40,7 +40,8 @@ const GenezisCheckerConfig = deleteOnProduction({
     port: GenezisChecker.integer({ convert: true }),
     plugins: GenezisChecker.array({
         of: GenezisChecker.function()
-    })
+    }),
+    before: GenezisChecker.function()
 });
 
 /**
@@ -50,6 +51,8 @@ export default async (settings) => {
     GenezisChecker(settings, GenezisCheckerConfig);
 
     const app = new Express(); // Initialize Express variable
+
+    if (settings.before) await settings.before(app);
 
     if (settings.viewEngine) {
         app.set("view engine", settings.viewEngine); // Setting up the view engine
@@ -61,7 +64,6 @@ export default async (settings) => {
     }
 
     if (settings.supportJSONRequest) {
-        console.log("RRR", settings.supportJSONRequest);
         app.use(body_parser.json({ limit: settings.supportJSONRequest.limit }));
     }
 
