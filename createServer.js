@@ -2,8 +2,6 @@ import GenezisChecker from "@genezis/genezis/Checker";
 import deleteOnProduction from "@genezis/genezis/utils/deleteOnProduction";
 
 import Express from "express";
-import body_parser from "body-parser"; // for getting GETs/POSTs data
-import session from "express-session";
 
 const GenezisCheckerConfig = deleteOnProduction({
     viewEngine: GenezisChecker.string().required({ onlyIfAvailableOneOf: ["viewsPaths"] }),
@@ -64,7 +62,7 @@ export default async (settings) => {
     }
 
     if (settings.supportJSONRequest) {
-        app.use(body_parser.json({ limit: settings.supportJSONRequest.limit }));
+        app.use(require("body-parser").default.json({ limit: settings.supportJSONRequest.limit }));
     }
 
     if (settings.supportGet) {
@@ -79,7 +77,7 @@ export default async (settings) => {
     if (settings.session) {
         if (settings.session.store) settings.session.store = settings.session.store(session); 
 
-        app.use(session(settings.session));
+        app.use(require("express-session").default(settings.session));
     }
 
     if (settings.hmr) {
