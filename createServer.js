@@ -62,7 +62,7 @@ export default async (settings) => {
     }
 
     if (settings.supportJSONRequest) {
-        app.use(require("body-parser").default.json({ limit: settings.supportJSONRequest.limit }));
+        app.use(require("body-parser").json({ limit: settings.supportJSONRequest.limit }));
     }
 
     if (settings.supportGet) {
