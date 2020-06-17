@@ -66,7 +66,7 @@ export default async (settings) => {
     }
 
     if (settings.supportGet) {
-        app.use(body_parser.urlencoded({
+        app.use(require("body-parser").urlencoded({
             extended: settings.supportGet.extended,
             limit: settings.supportGet.limit
         }));
