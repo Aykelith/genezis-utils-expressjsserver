@@ -75,9 +75,10 @@ export default async (settings) => {
     if (settings.trustProxy) app.enable("trust proxy");
 
     if (settings.session) {
+        const session = require("express-session");
         if (settings.session.store) settings.session.store = settings.session.store(session); 
 
-        app.use(require("express-session").default(settings.session));
+        app.use(session(settings.session));
     }
 
     if (settings.hmr) {
